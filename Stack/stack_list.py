@@ -1,31 +1,37 @@
 class Stack:
-    """Simple Stack (LIFO) implementation."""
+    """Simple Stack (LIFO) implementation using Python list."""
 
     def __init__(self):
-        self.tems = []  # O(1) - Creating an empty list
+        """Initialize an empty stack. O(1)"""
+        self.items = []  # O(1)
 
     def __str__(self):
-        return "\n".join(str(item) for item in self.tems)  # O(n) - Iterates through all elements
+        """Return stack elements from top to bottom. O(n)"""
+        return "\n".join(str(item) for item in self.items)  # O(n)
 
     def is_empty(self):
-        return len(self.tems) == 0  # O(1) - Length check
+        """Check if stack is empty. O(1)"""
+        return len(self.items) == 0  # O(1)
 
     def push(self, value):
-        self.tems.append(value)  # O(1) amortized - Append at end of list
+        """Push an element onto the stack. O(1) amortized"""
+        self.items.append(value)  # O(1) amortized
         return f"Element '{value}' inserted."
 
     def pop(self):
-        if self.is_empty():
+        """Remove and return the top element. O(1)"""
+        if self.is_empty():  # O(1)
             return "Error: Stack is empty."
-        return self.tems.pop()  # O(1) - Remove from end of list
+        return self.items.pop()  # O(1)
 
     def peek(self):
-        if self.is_empty():
+        """Return the top element without removing it. O(1)"""
+        if self.is_empty():  # O(1)
             return "Error: Stack is empty."
-        return self.tems[-1]  # O(1) - Access last element
+        return self.items[-1]  # O(1)
 
 
-# Example usage
+# ------------------ Example usage ------------------
 if __name__ == "__main__":
     stack = Stack()
     print(stack.push(2))  # O(1)

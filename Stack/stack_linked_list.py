@@ -1,81 +1,17 @@
-
 class Node:
-    def __init__(self, value = None):
-        self.value = value
-        self.next = next
-
-    
-class LinkedList:
-    def __init__(self):
-        self.head = None
-
-    def __iter__(self):
-        curnode = self.head
-        while curnode:
-            yield curnode
-            curnode = curnode.next
-
-
-class Stack:
-    def __init__(self):
-        self.LinkedList = LinkedList()
-
-    def __str__(self):
-        values = [str(x.value) for x in self.LinkedList]
-        return '\n'.join(values)
-    
-    def isEmpty(self):
-        if self.LinkedList.head == None:
-            return True
-        else:
-            return False
-    
-    def push(self, value):
-        node = Node(value)
-        node.next =self.LinkedList.head
-        self.LinkedList.head = node
-        
-    def pop(self):
-        if self.isEmpty():
-            return "Stack is empty"
-        else:
-            node_value = self.LinkedList.head.value
-            self.LinkedList.head = self.LinkedList.head.next
-            return node_value
-
-    def peek(self):
-        if self.isEmpty():
-            return "Stack is empty"
-        else:
-            node_value = self.LinkedList.head.value
-            return node_value
-
-    def delete(self):
-        self.LinkedList.head = None
-
-customStack = Stack()
-print(customStack.isEmpty())
-customStack.push(2)
-customStack.push(3)
-customStack.push(4)
-print(customStack)
-print("")
-customStack.pop()
-print(customStack)
-print(customStack.peek())
-
-
-class Node:
+    """Represents a node in a singly linked list."""
     def __init__(self, value=None):
-        self.value = value
-        self.next = None  # Pointer to the next node
+        self.value = value  # O(1)
+        self.next = None    # O(1) - Pointer to the next node
 
 
 class LinkedList:
+    """Singly linked list used as the base for the stack."""
     def __init__(self):
-        self.head = None
+        self.head = None  # O(1)
 
     def __iter__(self):
+        """Iterates over all nodes in the linked list. O(n)"""
         current_node = self.head
         while current_node:
             yield current_node
@@ -83,47 +19,58 @@ class LinkedList:
 
 
 class Stack:
+    """Stack implementation using a singly linked list (LIFO)."""
     def __init__(self):
-        self.LinkedList = LinkedList()
+        self.linked_list = LinkedList()  # O(1)
 
     def __str__(self):
-        values = [str(x.value) for x in self.LinkedList]  # O(n) - Traverse all nodes
-        return '\n'.join(values)
-    
-    def isEmpty(self):
-        return self.LinkedList.head is None  # O(1)
+        """Returns a string representation of the stack from top to bottom. O(n)"""
+        values = [str(node.value) for node in self.linked_list]  # O(n)
+        return "\n".join(values)
+
+    def is_empty(self):
+        """Checks if the stack is empty. O(1)"""
+        return self.linked_list.head is None
 
     def push(self, value):
-        node = Node(value)                   # O(1)
-        node.next = self.LinkedList.head     # O(1)
-        self.LinkedList.head = node          # O(1)
-        
+        """Pushes an element onto the stack. O(1)"""
+        new_node = Node(value)                  # O(1)
+        new_node.next = self.linked_list.head   # O(1)
+        self.linked_list.head = new_node        # O(1)
+
     def pop(self):
-        if self.isEmpty():                   # O(1)
+        """Removes and returns the top element of the stack. O(1)"""
+        if self.is_empty():                     # O(1)
             return "Stack is empty"
-        node_value = self.LinkedList.head.value  # O(1)
-        self.LinkedList.head = self.LinkedList.head.next  # O(1)
-        return node_value
+        top_value = self.linked_list.head.value # O(1)
+        self.linked_list.head = self.linked_list.head.next  # O(1)
+        return top_value
 
     def peek(self):
-        if self.isEmpty():                   # O(1)
+        """Returns the top element without removing it. O(1)"""
+        if self.is_empty():                     # O(1)
             return "Stack is empty"
-        return self.LinkedList.head.value    # O(1)
+        return self.linked_list.head.value      # O(1)
 
     def delete(self):
-        self.LinkedList.head = None          # O(1)
+        """Deletes the entire stack. O(1)"""
+        self.linked_list.head = None
 
 
-# ------------------ Sample Usage ------------------
-customStack = Stack()
-print(customStack.isEmpty())  # O(1)
-customStack.push(2)           # O(1)
-customStack.push(3)           # O(1)
-customStack.push(4)           # O(1)
+# ------------------ Example Usage ------------------
+if __name__ == "__main__":
+    stack = Stack()
+    print(stack.is_empty())  # O(1)
+    
+    stack.push(2)            # O(1)
+    stack.push(3)            # O(1)
+    stack.push(4)            # O(1)
 
-print(customStack)            # O(n)
+    print("\nCurrent Stack:")
+    print(stack)             # O(n)
 
-print("")
-customStack.pop()             # O(1)
-print(customStack)            # O(n)
-print(customStack.peek())     # O(1)
+    stack.pop()              # O(1)
+    print("\nAfter Pop:")
+    print(stack)             # O(n)
+
+    print("\nTop Element:", stack.peek())  # O(1)
