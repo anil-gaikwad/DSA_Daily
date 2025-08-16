@@ -24,22 +24,18 @@ class Stack:
         self.linked_list = LinkedList()  # O(1)
 
     def __str__(self):
-        """Returns a string representation of the stack from top to bottom. O(n)"""
         values = [str(node.value) for node in self.linked_list]  # O(n)
-        return "\n".join(values)
+        return " -> ".join(values) + " (Top)"
 
     def is_empty(self):
-        """Checks if the stack is empty. O(1)"""
-        return self.linked_list.head is None
+        return self.linked_list.head is None  # O(1)
 
     def push(self, value):
-        """Pushes an element onto the stack. O(1)"""
         new_node = Node(value)                  # O(1)
         new_node.next = self.linked_list.head   # O(1)
         self.linked_list.head = new_node        # O(1)
 
     def pop(self):
-        """Removes and returns the top element of the stack. O(1)"""
         if self.is_empty():                     # O(1)
             return "Stack is empty"
         top_value = self.linked_list.head.value # O(1)
@@ -47,14 +43,12 @@ class Stack:
         return top_value
 
     def peek(self):
-        """Returns the top element without removing it. O(1)"""
         if self.is_empty():                     # O(1)
             return "Stack is empty"
         return self.linked_list.head.value      # O(1)
 
     def delete(self):
-        """Deletes the entire stack. O(1)"""
-        self.linked_list.head = None
+        self.linked_list.head = None  # O(1)
 
 
 # ------------------ Example Usage ------------------
