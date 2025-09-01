@@ -20,7 +20,6 @@ print(b_sort)
 
 ## O(n)
 def bubble_sort(custom_list):
-
     n = len(custom_list)
     for i  in range(n-1):
         swap = False
