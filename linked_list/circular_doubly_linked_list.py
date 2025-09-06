@@ -1,4 +1,6 @@
 class Node:
+    """A single node in a circular doubly linked list."""
+
     def __init__(self, value):
         self.value = value
         self.next = None
@@ -7,192 +9,189 @@ class Node:
     def __str__(self):
         return str(self.value)
 
+
 class CircularDoublyLinkedList:
+    """Circular Doubly Linked List implementation."""
+
     def __init__(self):
         self.head = None
         self.tail = None
         self.length = 0
-    
+
     def __str__(self):
-        current_node = self.head
+        """Return a string representation of the list. O(n)"""
+        if not self.head:
+            return ""
         result = ""
-        
-        while current_node:
-            result += str(current_node.value)
-            current_node = current_node.next
-            if current_node == self.head: break
+        current = self.head
+        while True:
+            result += str(current.value)
+            current = current.next
+            if current == self.head:
+                break
             result += " <-> "
-        
         return result
 
     def append(self, value):
+        """Add a node at the end. O(1)"""
         new_node = Node(value)
         if self.length == 0:
-            self.head = new_node
-            self.tail = new_node
-            new_node.next = new_node
-            new_node.prev = new_node
+            self.head = self.tail = new_node
+            new_node.next = new_node.prev = new_node
         else:
             self.tail.next = new_node
-            self.head.prev = new_node
             new_node.prev = self.tail
             new_node.next = self.head
-            self.tail = new_node
-        self.length +=1
-    
-    def prepend(self, value):
-        new_node = Node(value)
-        if self.length == 0:
-            self.head = new_node
-            self.tail = new_node
-            new_node.next = new_node
-            new_node.prev = new_node
-        else:
-            self.tail.next = new_node
             self.head.prev = new_node
-            new_node.prev = self.tail
-            new_node.next = self.head
-            self.head = new_node
+            self.tail = new_node
+        self.length += 1
 
-        self.length +=1
+    def prepend(self, value):
+        """Add a node at the beginning. O(1)"""
+        new_node = Node(value)
+        if self.length == 0:
+            self.head = self.tail = new_node
+            new_node.next = new_node.prev = new_node
+        else:
+            self.tail.next = new_node
+            new_node.prev = self.tail
+            new_node.next = self.head
+            self.head.prev = new_node
+            self.head = new_node
+        self.length += 1
 
     def traverse(self):
-        current_node = self.head
-        while current_node:
-            print(current_node.value)
-            current_node = current_node.next
-            if current_node == self.head:
-                break
-    
-    def reverse_traverse(self):
-        current_node = self.tail
-        while current_node:
-            print(current_node.value)
-            current_node = current_node.prev
-            if current_node == self.tail:
+        """Traverse list forward and print values. O(n)"""
+        if self.length == 0:
+            return
+        current = self.head
+        while True:
+            print(current.value)
+            current = current.next
+            if current == self.head:
                 break
 
-    
-    def search(self, target):
-        current_node = self.head
-        index = 0
-        while current_node:
-            if current_node.value == target:
-                return True, index
-            current_node = current_node.next
-            if current_node == self.head:
+    def reverse_traverse(self):
+        """Traverse list backward and print values. O(n)"""
+        if self.length == 0:
+            return
+        current = self.tail
+        while True:
+            print(current.value)
+            current = current.prev
+            if current == self.tail:
                 break
-            index +=1
-        return False, index
-    
+
+    def search(self, target):
+        """Return (True, index) if found, else (False, -1). O(n)"""
+        if self.length == 0:
+            return False, -1
+        index = 0
+        current = self.head
+        while True:
+            if current.value == target:
+                return True, index
+            current = current.next
+            index += 1
+            if current == self.head:
+                break
+        return False, -1
+
     def get(self, index):
+        """Get node at specific index. O(n)"""
         if index < 0 or index >= self.length:
             return None
-        if index > self.length //2:
-            current_node = self.head
+        # Choose shortest direction
+        if index <= self.length // 2:
+            current = self.head
             for _ in range(index):
-                current_node = current_node.next
+                current = current.next
         else:
-            current_node = self.tail
-            for _ in range(self.length -1 , index, -1):
-                current_node = current_node.prev
-        return current_node
-
+            current = self.tail
+            for _ in range(self.length - 1, index, -1):
+                current = current.prev
+        return current
 
     def set_value(self, index, value):
-        temp = self.get(index)
-        if temp:
-            temp.value = value
+        """Update value of node at index. O(n)"""
+        node = self.get(index)
+        if node:
+            node.value = value
             return True
         return False
-    
-    def insert(self, index, value):
-        if index < 0 or index > self.length:
-            return "Index Out bounds"
 
-        if index ==0:
+    def insert(self, index, value):
+        """Insert node at specific index. O(n)"""
+        if index < 0 or index > self.length:
+            raise IndexError("Index out of range")
+        if index == 0:
             self.prepend(value)
-            return 
-        elif index == self.length:
+            return
+        if index == self.length:
             self.append(value)
             return
-        
         new_node = Node(value)
-        temp_node = self.get(index-1)
-        
-        new_node.next = temp_node.next
-        new_node.prev = temp_node
-        temp_node.next.prev = new_node
-        temp_node.next = new_node
-        self.length +=1
+        prev_node = self.get(index - 1)
+        next_node = prev_node.next
+        new_node.prev = prev_node
+        new_node.next = next_node
+        prev_node.next = new_node
+        next_node.prev = new_node
+        self.length += 1
 
-    
     def pop_first(self):
-        if not self.head:
+        """Remove and return first node. O(1)"""
+        if self.length == 0:
             return None
-        
         popped_node = self.head
         if self.length == 1:
-            self.head = None
-            self.tail = None
+            self.head = self.tail = None
         else:
             self.head = self.head.next
-            popped_node.next = None
-            popped_node.prev = None
             self.head.prev = self.tail
             self.tail.next = self.head
-
-        self.length -=1
+            popped_node.next = popped_node.prev = None
+        self.length -= 1
         return popped_node
 
     def pop(self):
-        if not self.tail:
+        """Remove and return last node. O(1)"""
+        if self.length == 0:
             return None
-        
         popped_node = self.tail
         if self.length == 1:
-            self.head = None
-            self.tail = None
+            self.head = self.tail = None
         else:
             self.tail = self.tail.prev
-            popped_node.next = None
-            popped_node.prev = None
             self.tail.next = self.head
             self.head.prev = self.tail
-
-        self.length -=1
+            popped_node.next = popped_node.prev = None
+        self.length -= 1
         return popped_node
-    
 
     def remove(self, index):
-        if index >= self.length or index < 0:
+        """Remove node at specific index. O(n)"""
+        if index < 0 or index >= self.length:
             return None
         if index == 0:
             return self.pop_first()
-        if index == self.length -1:
+        if index == self.length - 1:
             return self.pop()
-        
-        popped_node = self.get(index)
-        popped_node.prev.next = popped_node.next
-        popped_node.next.prev = popped_node.prev
-        
-        popped_node.next = None
-        popped_node.prev = None
-        self.length -=1
-        return popped_node
+        node_to_remove = self.get(index)
+        node_to_remove.prev.next = node_to_remove.next
+        node_to_remove.next.prev = node_to_remove.prev
+        node_to_remove.next = node_to_remove.prev = None
+        self.length -= 1
+        return node_to_remove
 
 
-cdl = CircularDoublyLinkedList()
-cdl.append(1)
-cdl.append(2)
-cdl.append(3)
-cdl.append(4)
-print(cdl)
-print(cdl)
-cdl.remove(3)
-print(cdl)
-
-
-
-
-
+# Example usage
+if __name__ == "__main__":
+    cdl = CircularDoublyLinkedList()
+    cdl.append(1)
+    cdl.append(2)
+    cdl.append(3)
+    cdl.append(4)
+    print("Initial:", cdl)
+    cdl.remove(3)
+    print("After remove:", cdl)
