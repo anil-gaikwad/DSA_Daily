@@ -36,16 +36,12 @@ def Solution4(lst):
 
 # solution [5]
 def Solution5(lst):
-    nums = [1,2,2,4,2,3,4,4,5,1]
-    unique, counts = np.unique(nums, return_counts=True)
-    freq = dict(zip(unique.tolist(), counts.tolist()))
-    return freq
+    unique, counts = np.unique(lst, return_counts=True)
+    return dict(zip(unique.tolist(), counts.tolist()))      
 
 # solution [6]
 def Solution6(lst):
-    nums = [1,2,2,4,2,3,4,4,5,1]
-    freq = pd.Series(nums).value_counts().to_dict()
-    return freq
+    return pd.Series(lst).value_counts().to_dict()
 
 
 lst = [1,2,2,4,2,3,4,4,5,1]
