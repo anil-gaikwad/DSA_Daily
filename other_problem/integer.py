@@ -172,6 +172,18 @@ def fibonacci_sequence(n: int):
 print(fibonacci_sequence(6))  # [0,1,1,2,3,5]
 
 
+def fibonacci(n):
+    if n <= 1:
+        return n
+    else:
+        return fibonacci(n - 1) + fibonacci(n - 2)
+
+def fibonacci_sequence(n):
+    return [fibonacci(i) for i in range(n)]
+
+print(fibonacci_sequence(6))  # [0, 1, 1, 2, 3, 5]
+
+
 # ============================================================
 # 11. Happy Number
 # Input: 19 → Output: True
