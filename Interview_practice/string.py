@@ -21,11 +21,13 @@ def remove_outermost_parentheses(s: str) -> str:
     depth = 0
     for ch in s:
         if ch == '(':
-            if depth > 0: res.append(ch)
+            if depth > 0: 
+                res.append(ch)
             depth += 1
         elif ch == ')':
             depth -= 1
-            if depth > 0: res.append(ch)
+            if depth > 0: 
+                res.append(ch)
     return "".join(res)
 
 print("Q1 Solution 1:", remove_outermost_parentheses("(()())(())"))
@@ -448,10 +450,14 @@ def basic_calculator_no_stack(s: str) -> int:
         if ch.isdigit():
             num = num*10 + int(ch)
         if ch in "+-*/" or i == len(s)-1:
-            if sign == '+': res, last_num = res + last_num, num
-            elif sign == '-': res, last_num = res + last_num, -num
-            elif sign == '*': last_num *= num
-            elif sign == '/': last_num = int(last_num / num)
+            if sign == '+': 
+                res, last_num = res + last_num, num
+            elif sign == '-': 
+                res, last_num = res + last_num, -num
+            elif sign == '*': 
+                last_num *= num
+            elif sign == '/': 
+                last_num = int(last_num / num)
             sign = ch
             num = 0
     return res + last_num
